@@ -1,19 +1,21 @@
-import React from 'react'
-import styles from '../styles/ProductCard.module.css'
+import React from 'react';
 
-const ProductCard = ({ product }) => {
+export default function ProductCard({ product, addToCart, cart }) {
+  // Check if this specific item exists in the cart array
+  const isInCart = cart.some(item => item.id === product.id);
+
   return (
-    <div
-      className={`${styles.card} ${!product.inStock ? styles.outOfStock : ''}`}
-    >
+    // Fix: Added data-testid so Jest can find the element
+    <div className="product-card" data-testid={`product-${product.id}`}>
       <h3>{product.name}</h3>
-      <p>Price: {product.price}</p>
-      <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
+      <p>Category: {product.category}</p>
+      
+      <button onClick={() => addToCart(product)}>
+        Add to Cart
+      </button>
 
-      {/* TODO: Implement Add to Cart button functionality */}
-      <button data-testid={'product-' + product.id}>Add to Cart</button>
+      {isInCart && <p>{product.name} is in your cart.</p>}
     </div>
-  )
+  );
 }
 
-export default ProductCard
