@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
-function PlantCard() {
+function PlantCard({ plant }) {
+  // Destructure plant properties
+  const { name, image, price } = plant;
+  
+  // Track out-of-stock status locally
+  const [isInStock, setIsInStock] = useState(true);
+
+  function handleToggleStock() {
+    setIsInStock((prevStatus) => !prevStatus);
+  }
+
   return (
     <li className="card" data-testid="plant-item">
-      <img src={"https://via.placeholder.com/400"} alt={"plant name"} />
-      <h4>{"plant name"}</h4>
-      <p>Price: {"plant price"}</p>
-      {true ? (
-        <button className="primary">In Stock</button>
+      <img src={image || "https://via.placeholder.com/150"} alt={name} />
+      <h4>{name}</h4>
+      <p>Price: {price}</p>
+      {isInStock ? (
+        <button className="primary" onClick={handleToggleStock}>
+          In Stock
+        </button>
       ) : (
-        <button>Out of Stock</button>
+        <button onClick={handleToggleStock}>Out of Stock</button>
       )}
     </li>
   );
